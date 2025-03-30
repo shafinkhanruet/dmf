@@ -170,7 +170,7 @@ const Navbar = () => {
               >
                 <Box
                   component="img"
-                  src={process.env.PUBLIC_URL + '/images/logo.png'}
+                  src="/images/logo.png"
                   alt="DMF Logo"
                   sx={{
                     height: 40,
@@ -220,7 +220,7 @@ const Navbar = () => {
               >
                 <Box
                   component="img"
-                  src={process.env.PUBLIC_URL + '/images/logo.png'}
+                  src="/images/logo.png"
                   alt="DMF Logo"
                   sx={{
                     height: 32,
