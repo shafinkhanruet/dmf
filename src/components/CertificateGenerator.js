@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import {
   Container,
   Typography,
@@ -60,13 +60,18 @@ const CertificateGenerator = () => {
     severity: 'success',
   });
 
-  const handleInputChange = (event) => {
+  // Memoize handlers for better performance
+  const handleInputChange = useCallback((event) => {
     const { name, value } = event.target;
-    setCertificateData((prev) => ({
+    setCertificateData(prev => ({
       ...prev,
       [name]: value,
     }));
-  };
+  }, []);
+
+  const handleCloseSnackbar = useCallback(() => {
+    setSnackbar(prev => ({ ...prev, open: false }));
+  }, []);
 
   const generateCertificate = async () => {
     try {
@@ -166,17 +171,14 @@ const CertificateGenerator = () => {
     }
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbar((prev) => ({ ...prev, open: false }));
-  };
-
   return (
-    <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
+    <Container maxWidth="lg" sx={{ py: { xs: 2, md: 8 } }}>
       <Typography
         variant="h2"
         align="center"
         sx={{
-          mb: 6,
+          mb: { xs: 3, md: 6 },
+          fontSize: { xs: '2rem', md: '2.5rem' },
           fontWeight: 700,
           background: 'linear-gradient(45deg, #FFFFFF 30%, rgba(255,255,255,0.9) 90%)',
           backgroundClip: 'text',
@@ -203,7 +205,7 @@ const CertificateGenerator = () => {
           },
         }}
       >
-        <Grid container spacing={3}>
+        <Grid container spacing={{ xs: 2, md: 3 }} sx={{ mb: 2 }}>
           <Grid item xs={12} md={6}>
             <TextField
               fullWidth
@@ -212,6 +214,10 @@ const CertificateGenerator = () => {
               value={certificateData.recipientName}
               onChange={handleInputChange}
               required
+              autoComplete="name"
+              inputProps={{
+                maxLength: 50,
+              }}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '& fieldset': {
@@ -229,6 +235,7 @@ const CertificateGenerator = () => {
                 },
                 '& .MuiInputBase-input': {
                   color: 'text.primary',
+                  py: { xs: 1.5, md: 2 }, // Increase touch target size on mobile
                 },
               }}
             />
@@ -253,6 +260,9 @@ const CertificateGenerator = () => {
                     borderColor: 'primary.main',
                   },
                   color: 'text.primary',
+                  '.MuiSelect-select': {
+                    py: { xs: 1.5, md: 2 }, // Increase touch target size on mobile
+                  },
                 }}
               >
                 <MenuItem value="donation">Donation Certificate</MenuItem>
@@ -425,13 +435,19 @@ const CertificateGenerator = () => {
               fullWidth
               size="large"
               sx={{
-                mt: 2,
+                mt: { xs: 1, md: 2 },
+                py: { xs: 1.5, md: 2 }, // Increase touch target size on mobile
                 background: 'linear-gradient(45deg, #3B82F6, #2563EB)',
                 color: '#FFFFFF',
+                fontSize: { xs: '1rem', md: '1.1rem' },
+                fontWeight: 600,
                 '&:hover': {
                   background: 'linear-gradient(45deg, #60A5FA, #3B82F6)',
                   transform: 'translateY(-2px)',
                   boxShadow: '0 6px 20px rgba(59, 130, 246, 0.3)',
+                },
+                '&:active': {
+                  transform: 'translateY(0)',
                 },
               }}
             >
@@ -446,11 +462,17 @@ const CertificateGenerator = () => {
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        sx={{
+          bottom: { xs: 16, sm: 24 }, // Adjust position for mobile
+        }}
       >
         <Alert
           onClose={handleCloseSnackbar}
           severity={snackbar.severity}
-          sx={{ width: '100%' }}
+          sx={{
+            width: '100%',
+            fontSize: { xs: '0.875rem', sm: '1rem' },
+          }}
         >
           {snackbar.message}
         </Alert>
@@ -459,4 +481,4 @@ const CertificateGenerator = () => {
   );
 };
 
-export default CertificateGenerator; 
+export default memo(CertificateGenerator); 

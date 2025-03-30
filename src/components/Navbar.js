@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, memo } from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
 import {
   AppBar,
@@ -70,80 +70,113 @@ function HideOnScroll(props) {
   );
 }
 
+// Memoize menu items to prevent unnecessary re-renders
+const MobileMenuItem = memo(({ item, location, handleDrawerToggle, openSubmenu, handleSubmenuToggle }) => (
+  <React.Fragment>
+    <ListItem
+      button
+      component={RouterLink}
+      to={item.path}
+      onClick={() => item.submenu ? handleSubmenuToggle(item.title) : handleDrawerToggle()}
+      sx={{
+        color: location.pathname === item.path ? 'primary.main' : 'text.primary',
+        '&:hover': {
+          backgroundColor: 'rgba(59, 130, 246, 0.08)',
+        },
+        py: 1.5, // Increase touch target size
+      }}
+    >
+      <ListItemIcon sx={{ color: 'inherit', minWidth: 40 }}>
+        {item.icon}
+      </ListItemIcon>
+      <ListItemText 
+        primary={item.title} 
+        primaryTypographyProps={{
+          sx: { fontSize: '1rem', fontWeight: location.pathname === item.path ? 600 : 400 }
+        }}
+      />
+      {item.submenu && (
+        openSubmenu === item.title ? <ExpandLess /> : <ExpandMore />
+      )}
+    </ListItem>
+    {item.submenu && (
+      <Collapse in={openSubmenu === item.title} timeout="auto" unmountOnExit>
+        <List component="div" disablePadding>
+          {item.submenu.map((subItem) => (
+            <ListItem
+              button
+              key={subItem.title}
+              component={RouterLink}
+              to={subItem.path}
+              onClick={handleDrawerToggle}
+              sx={{
+                pl: 4,
+                py: 1.5,
+                color: location.pathname === subItem.path ? 'primary.main' : 'text.primary',
+                '&:hover': {
+                  backgroundColor: 'rgba(59, 130, 246, 0.08)',
+                },
+              }}
+            >
+              <ListItemText 
+                primary={subItem.title}
+                primaryTypographyProps={{
+                  sx: { fontSize: '0.95rem', fontWeight: location.pathname === subItem.path ? 600 : 400 }
+                }}
+              />
+            </ListItem>
+          ))}
+        </List>
+      </Collapse>
+    )}
+  </React.Fragment>
+));
+
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState({});
   const [openSubmenu, setOpenSubmenu] = useState('');
   const location = useLocation();
 
-  const handleDrawerToggle = () => {
+  // Memoize handlers
+  const handleDrawerToggle = useCallback(() => {
     setMobileOpen(!mobileOpen);
-  };
+  }, [mobileOpen]);
 
-  const handleMenuOpen = (event, menuId) => {
-    setAnchorEl({ ...anchorEl, [menuId]: event.currentTarget });
-  };
+  const handleMenuOpen = useCallback((event, menuId) => {
+    setAnchorEl(prev => ({ ...prev, [menuId]: event.currentTarget }));
+  }, []);
 
-  const handleMenuClose = (menuId) => {
-    setAnchorEl({ ...anchorEl, [menuId]: null });
-  };
+  const handleMenuClose = useCallback((menuId) => {
+    setAnchorEl(prev => ({ ...prev, [menuId]: null }));
+  }, []);
 
-  const handleSubmenuToggle = (menuId) => {
-    setOpenSubmenu(openSubmenu === menuId ? '' : menuId);
-  };
+  const handleSubmenuToggle = useCallback((menuId) => {
+    setOpenSubmenu(prev => prev === menuId ? '' : menuId);
+  }, []);
 
   const isMenuOpen = (menuId) => Boolean(anchorEl[menuId]);
 
   const drawer = (
-    <Box sx={{ width: 280, pt: 2 }}>
+    <Box 
+      sx={{ 
+        width: 280, 
+        pt: 2,
+        overflowY: 'auto',
+        height: '100%',
+        WebkitOverflowScrolling: 'touch' // Improve scroll performance on iOS
+      }}
+    >
       <List>
         {menuItems.map((item) => (
-          <React.Fragment key={item.title}>
-            <ListItem
-              button
-              component={RouterLink}
-              to={item.path}
-              onClick={() => item.submenu ? handleSubmenuToggle(item.title) : handleDrawerToggle()}
-              sx={{
-                color: location.pathname === item.path ? 'primary.main' : 'text.primary',
-                '&:hover': {
-                  backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                },
-              }}
-            >
-              <ListItemIcon sx={{ color: 'inherit' }}>
-                {item.icon}
-              </ListItemIcon>
-              <ListItemText primary={item.title} />
-              {item.submenu && (
-                openSubmenu === item.title ? <ExpandLess /> : <ExpandMore />
-              )}
-            </ListItem>
-            {item.submenu && (
-              <Collapse in={openSubmenu === item.title} timeout="auto" unmountOnExit>
-                <List component="div" disablePadding>
-                  {item.submenu.map((subItem) => (
-                    <ListItem
-                      button
-                      key={subItem.title}
-                      component={RouterLink}
-                      to={subItem.path}
-                      onClick={handleDrawerToggle}
-                      sx={{
-                        pl: 4,
-                        color: location.pathname === subItem.path ? 'primary.main' : 'text.primary',
-                        '&:hover': {
-                          backgroundColor: 'rgba(59, 130, 246, 0.08)',
-                        },
-                      }}
-                    >
-                      <ListItemText primary={subItem.title} />
-                    </ListItem>
-                  ))}
-                </List>
-              </Collapse>
-            )}
-          </React.Fragment>
+          <MobileMenuItem
+            key={item.title}
+            item={item}
+            location={location}
+            handleDrawerToggle={handleDrawerToggle}
+            openSubmenu={openSubmenu}
+            handleSubmenuToggle={handleSubmenuToggle}
+          />
         ))}
       </List>
     </Box>
@@ -156,6 +189,8 @@ const Navbar = () => {
           position="fixed"
           sx={{
             transition: 'all 0.3s ease',
+            backdropFilter: 'blur(8px)',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
           }}
         >
           <Container maxWidth="xl">
@@ -354,7 +389,7 @@ const Navbar = () => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         ModalProps={{
-          keepMounted: true,
+          keepMounted: true, // Better mobile performance
         }}
         sx={{
           display: { xs: 'block', md: 'none' },
@@ -362,6 +397,7 @@ const Navbar = () => {
             width: 280,
             backgroundColor: 'background.paper',
             backdropFilter: 'blur(12px)',
+            overscrollBehavior: 'contain', // Prevent body scroll when drawer is scrolled
           },
         }}
       >
@@ -371,4 +407,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default memo(Navbar); 
