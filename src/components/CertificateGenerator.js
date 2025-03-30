@@ -171,17 +171,18 @@ const CertificateGenerator = () => {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 8 }}>
+    <Container maxWidth="lg" sx={{ py: { xs: 4, md: 8 } }}>
       <Typography
         variant="h2"
         align="center"
         sx={{
           mb: 6,
           fontWeight: 700,
-          background: 'linear-gradient(45deg, #3B82F6, #2563EB)',
+          background: 'linear-gradient(45deg, #FFFFFF 30%, rgba(255,255,255,0.9) 90%)',
           backgroundClip: 'text',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
+          textShadow: '0 2px 10px rgba(59, 130, 246, 0.2)',
         }}
       >
         Certificate Generator
@@ -190,10 +191,16 @@ const CertificateGenerator = () => {
       <Paper
         elevation={3}
         sx={{
-          p: 4,
+          p: { xs: 2, md: 4 },
           borderRadius: 4,
-          background: 'rgba(255, 255, 255, 0.9)',
+          background: 'rgba(255, 255, 255, 0.02)',
           backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          transition: 'all 0.3s ease',
+          '&:hover': {
+            border: '1px solid rgba(255, 255, 255, 0.2)',
+            boxShadow: '0 8px 30px rgba(0, 0, 0, 0.2)',
+          },
         }}
       >
         <Grid container spacing={3}>
@@ -205,17 +212,48 @@ const CertificateGenerator = () => {
               value={certificateData.recipientName}
               onChange={handleInputChange}
               required
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.23)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.4)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'primary.main',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'text.secondary',
+                },
+                '& .MuiInputBase-input': {
+                  color: 'text.primary',
+                },
+              }}
             />
           </Grid>
 
           <Grid item xs={12} md={6}>
             <FormControl fullWidth>
-              <InputLabel>Certificate Type</InputLabel>
+              <InputLabel sx={{ color: 'text.secondary' }}>Certificate Type</InputLabel>
               <Select
                 name="certificateType"
                 value={certificateData.certificateType}
                 onChange={handleInputChange}
                 label="Certificate Type"
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.23)',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.4)',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                  color: 'text.primary',
+                }}
               >
                 <MenuItem value="donation">Donation Certificate</MenuItem>
                 <MenuItem value="volunteer">Volunteer Certificate</MenuItem>
@@ -234,6 +272,25 @@ const CertificateGenerator = () => {
                 value={certificateData.amount}
                 onChange={handleInputChange}
                 required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'rgba(255, 255, 255, 0.23)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'text.secondary',
+                  },
+                  '& .MuiInputBase-input': {
+                    color: 'text.primary',
+                  },
+                }}
               />
             </Grid>
           )}
@@ -248,6 +305,25 @@ const CertificateGenerator = () => {
                 value={certificateData.hours}
                 onChange={handleInputChange}
                 required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'rgba(255, 255, 255, 0.23)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'text.secondary',
+                  },
+                  '& .MuiInputBase-input': {
+                    color: 'text.primary',
+                  },
+                }}
               />
             </Grid>
           )}
@@ -261,6 +337,25 @@ const CertificateGenerator = () => {
                 value={certificateData.eventName}
                 onChange={handleInputChange}
                 required
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'rgba(255, 255, 255, 0.23)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'rgba(255, 255, 255, 0.4)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'text.secondary',
+                  },
+                  '& .MuiInputBase-input': {
+                    color: 'text.primary',
+                  },
+                }}
               />
             </Grid>
           )}
@@ -274,17 +369,48 @@ const CertificateGenerator = () => {
               value={certificateData.date}
               onChange={handleInputChange}
               required
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.23)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'rgba(255, 255, 255, 0.4)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'primary.main',
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'text.secondary',
+                },
+                '& .MuiInputBase-input': {
+                  color: 'text.primary',
+                },
+              }}
             />
           </Grid>
 
           <Grid item xs={12} md={6}>
             <FormControl fullWidth>
-              <InputLabel>Language</InputLabel>
+              <InputLabel sx={{ color: 'text.secondary' }}>Language</InputLabel>
               <Select
                 name="language"
                 value={certificateData.language}
                 onChange={handleInputChange}
                 label="Language"
+                sx={{
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.23)',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'rgba(255, 255, 255, 0.4)',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'primary.main',
+                  },
+                  color: 'text.primary',
+                }}
               >
                 <MenuItem value="en">English</MenuItem>
                 <MenuItem value="bn">Bengali</MenuItem>
@@ -300,9 +426,12 @@ const CertificateGenerator = () => {
               size="large"
               sx={{
                 mt: 2,
-                background: 'linear-gradient(45deg, #10B981, #059669)',
+                background: 'linear-gradient(45deg, #3B82F6, #2563EB)',
+                color: '#FFFFFF',
                 '&:hover': {
-                  background: 'linear-gradient(45deg, #34D399, #10B981)',
+                  background: 'linear-gradient(45deg, #60A5FA, #3B82F6)',
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 6px 20px rgba(59, 130, 246, 0.3)',
                 },
               }}
             >

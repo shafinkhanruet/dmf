@@ -168,6 +168,7 @@ const Navbar = () => {
                   display: { xs: 'none', md: 'flex' },
                   alignItems: 'center',
                   textDecoration: 'none',
+                  minWidth: 'fit-content',
                 }}
               >
                 <Box
@@ -185,6 +186,7 @@ const Navbar = () => {
                 />
                 <Typography
                   variant="h6"
+                  noWrap
                   sx={{
                     fontWeight: 700,
                     letterSpacing: '.1rem',
@@ -199,7 +201,7 @@ const Navbar = () => {
                 </Typography>
               </Box>
 
-              <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+              <Box sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}>
                 <IconButton
                   size="large"
                   aria-label="menu"
@@ -235,6 +237,7 @@ const Navbar = () => {
                 />
                 <Typography
                   variant="h6"
+                  noWrap
                   sx={{
                     fontWeight: 700,
                     letterSpacing: '.1rem',
@@ -249,7 +252,7 @@ const Navbar = () => {
                 </Typography>
               </Box>
 
-              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 1 }}>
+              <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, gap: 0.5, justifyContent: 'center' }}>
                 {menuItems.map((item) => (
                   <Box key={item.title}>
                     {item.submenu ? (
@@ -260,6 +263,9 @@ const Navbar = () => {
                             color: 'white',
                             display: 'flex',
                             alignItems: 'center',
+                            px: 1.5,
+                            minWidth: 'auto',
+                            whiteSpace: 'nowrap',
                             '&:hover': {
                               backgroundColor: 'rgba(255, 255, 255, 0.08)',
                             },
@@ -306,6 +312,9 @@ const Navbar = () => {
                         to={item.path}
                         sx={{
                           color: location.pathname === item.path ? 'primary.main' : 'white',
+                          px: 1.5,
+                          minWidth: 'auto',
+                          whiteSpace: 'nowrap',
                           '&:hover': {
                             backgroundColor: 'rgba(255, 255, 255, 0.08)',
                           },
@@ -324,6 +333,8 @@ const Navbar = () => {
                 variant="contained"
                 sx={{
                   ml: 2,
+                  minWidth: 'auto',
+                  whiteSpace: 'nowrap',
                   background: 'linear-gradient(45deg, #10B981, #059669)',
                   '&:hover': {
                     background: 'linear-gradient(45deg, #34D399, #10B981)',
@@ -349,6 +360,8 @@ const Navbar = () => {
           display: { xs: 'block', md: 'none' },
           '& .MuiDrawer-paper': {
             width: 280,
+            backgroundColor: 'background.paper',
+            backdropFilter: 'blur(12px)',
           },
         }}
       >
