@@ -29,6 +29,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import GroupsIcon from '@mui/icons-material/Groups';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
+import CardMembershipIcon from '@mui/icons-material/CardMembership';
 
 const menuItems = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
@@ -54,6 +55,7 @@ const menuItems = [
   },
   { title: 'Volunteer', path: '/volunteer', icon: <GroupsIcon /> },
   { title: 'News', path: '/news', icon: <NewspaperIcon /> },
+  { title: 'Certificates', path: '/certificates', icon: <CardMembershipIcon /> },
   { title: 'Contact', path: '/contact', icon: <ContactsIcon /> },
 ];
 

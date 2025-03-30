@@ -12,6 +12,7 @@ import Volunteer from './pages/Volunteer';
 import News from './pages/News';
 import Contact from './pages/Contact';
 import Gallery from './pages/Gallery';
+import Certificates from './pages/Certificates';
 import FloatingDonateButton from './components/FloatingDonateButton';
 
 const theme = createTheme({
@@ -196,6 +197,7 @@ function App() {
               <Route path="/news" element={<News />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/certificates" element={<Certificates />} />
             </Routes>
           </main>
           <FloatingDonateButton />
